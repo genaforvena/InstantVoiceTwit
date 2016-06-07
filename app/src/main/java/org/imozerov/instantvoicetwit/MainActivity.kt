@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.twitter.sdk.android.Twitter
+import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import org.imozerov.instantvoicetwit.login.LoginActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     var txtSpeechInput: TextView? = null
+    var sendTweetButton: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +28,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         txtSpeechInput = findViewById(R.id.txtSpeechInput) as TextView
+        sendTweetButton = findViewById(R.id.sendTweet)
+        sendTweetButton!!.setOnClickListener { sendTweet() }
         findViewById(R.id.btnSpeak)!!.setOnClickListener { promptSpeechInput() }
+    }
+
+    private fun sendTweet() {
+        TweetComposer.Builder(this).text(txtSpeechInput!!.text.toString()).show()
+        resetInput()
+    }
+
+    private fun resetInput() {
+        txtSpeechInput!!.text = ""
+        sendTweetButton!!.visibility = View.GONE
     }
 
     private fun promptSpeechInput() {
@@ -51,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 if (resultCode == RESULT_OK && null != data) {
                     val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     txtSpeechInput!!.text = result[0]
+                    sendTweetButton!!.visibility = View.VISIBLE
                 }
             }
         }

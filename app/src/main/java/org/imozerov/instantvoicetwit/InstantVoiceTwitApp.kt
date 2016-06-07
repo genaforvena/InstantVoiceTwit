@@ -3,6 +3,7 @@ package org.imozerov.instantvoicetwit
 import android.app.Application
 import com.twitter.sdk.android.Twitter
 import com.twitter.sdk.android.core.TwitterAuthConfig
+import com.twitter.sdk.android.tweetcomposer.TweetComposer
 import io.fabric.sdk.android.Fabric
 
 /**
@@ -13,7 +14,7 @@ class InstantVoiceTwitApp : Application() {
         super.onCreate()
 
         val authConfig = TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET)
-        Fabric.with(this, Twitter(authConfig))
+        Fabric.with(this, Twitter(authConfig), TweetComposer())
     }
 
     companion object {
