@@ -2,11 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.imozerov.instantvoicetwit">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="InstantVoiceTwitApp"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
@@ -19,8 +22,12 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c8a15ff34576dad68edd67ba6ad5b9a5a3e7ff4b" />
     </application>
 
 </manifest>

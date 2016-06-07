@@ -3,12 +3,12 @@ package org.imozerov.instantvoicetwit
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.speech.RecognizerIntent
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import android.widget.Toast
-import org.imozerov.instantvoicetwit.login.isLoggedIn
+import com.twitter.sdk.android.Twitter
+import org.imozerov.instantvoicetwit.login.LoginActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,9 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        if (!prefs.isLoggedIn()) {
+        if (Twitter.getSessionManager().activeSession == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
@@ -59,6 +57,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        val REQ_CODE_SPEECH_INPUT = 11342
+        private val REQ_CODE_SPEECH_INPUT = 11342
     }
 }
