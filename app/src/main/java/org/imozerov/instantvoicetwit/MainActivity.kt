@@ -33,9 +33,27 @@ class MainActivity : AppCompatActivity() {
         findViewById(R.id.btnSpeak)!!.setOnClickListener { promptSpeechInput() }
     }
 
+    override fun onStart() {
+        super.onStart()
+        resetInput()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == RESULT_OK && null != data) {
+                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    txtSpeechInput!!.text = result[0]
+                    sendTweetButton!!.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
     private fun sendTweet() {
         TweetComposer.Builder(this).text(txtSpeechInput!!.text.toString()).show()
-        resetInput()
     }
 
     private fun resetInput() {
@@ -55,20 +73,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,
                     getString(R.string.speech_not_supported),
                     Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            REQ_CODE_SPEECH_INPUT -> {
-                if (resultCode == RESULT_OK && null != data) {
-                    val result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                    txtSpeechInput!!.text = result[0]
-                    sendTweetButton!!.visibility = View.VISIBLE
-                }
-            }
         }
     }
 
